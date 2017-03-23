@@ -1,0 +1,161 @@
+"---------------------------------------
+" Vundle
+"---------------------------------------
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" More plugins
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'evidens/vim-twig.git'
+Plugin 'morhetz/gruvbox'
+Plugin 'docteurklein/php-getter-setter.vim.git'
+Plugin 'stephpy/vim-yaml.git'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+
+"----------------
+" CONFIGURATION
+"----------------
+
+" les réglages suivants concernent ctags et le plugin Taglist
+" qui permettant de naviguer plus facilement dans le code source.
+
+" le plugin taglist doit connaitre l'emplacement du binaire ctaqs pour
+" fonctionner
+
+" L'emplacement de notre fichier ctags pour naviguer
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+
+" dans le code source du projet en cours.
+" Création du fichier avec la commande:
+"ctags --tag-relative -f ~/.vim/tags/$project_name.tags --langmap=php:.engine.inc.module.theme.php.install --php-kinds=cdfi --languages=php --recurse --exclude=.svn --exclude=.git --extra=f
+"set tags+=~/.vim/tags/$project_name.tags
+
+"--------------------------------------
+" GENERAL
+"-------------------------------------
+
+syntax on
+
+" GVim
+set guioptions-=m " No menu
+set guioptions-=T " no toolbar
+set guioptions-=r " no right scroll
+set guioptions-=L " no left scroll
+
+" Vim Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+set guifont=Liberation\ Mono\ for\ Powerline\ 10
+" Pas de fleches ? Installer la font ici
+" https://github.com/Lokaltog/powerline-fonts
+" http://stackoverflow.com/questions/19105279/how-can-i-setup-my-vim-airline-or-vim-powerline
+
+" Selection d'un colorscheme
+"colorscheme slate
+colorscheme gruvbox
+set background=dark
+
+" 256 couleurs...
+set t_Co=256
+
+" Active la souris uniquement en mode visuel et normal
+set mouse=n
+set mouse+=v
+
+" Affiche le status du fichier
+set laststatus=2
+
+" Fini les swap files
+set noswapfile
+
+" Parametrage de l'indentation
+set smartindent
+set autoindent
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+
+" Affichage des numeros de ligne
+set number
+
+" Parametrage du folding
+set foldmethod=indent
+set foldnestmax=3
+set nofoldenable
+
+" Parametrage de l'affichage des fenetres/split
+set wmh=0
+
+" Parametrage de l'affichage des listes
+set wildmode=list:longest
+set wildmenu
+
+" Color le text au delà de 80 caractères
+"highlight OverLength ctermbg=red ctermfg=white guibg=Red
+"match OverLength /\%81v/
+
+" Affiche les caractères invisibles
+"set listchars=tab:»·,trail:·,extends:#,nbsp:·,eol:¶
+set listchars=tab:»·,trail:·,extends:#,nbsp:·
+set list
+
+" activer l'omnicompletion pour tous les langages
+set omnifunc=syntaxcomplete#Complete
+
+"---------------------
+" MAPPING
+"---------------------
+
+"F2 pour Switch on/off de la fenêtre TagList
+nnoremap <silent> <C-F3> :TlistToggle<CR>
+
+" Map rapide des commandes SVN simples
+noremap <silent> <F2> :NERDTreeToggle<CR>
+noremap <silent> <C-F2> :NERDTreeFind %<CR>
+
+" F3 pour sauter à la définition de la fonction (grace à ctags)
+map <F3> <C-w>]
+imap <F3> <Esc><C-w>]
+
+" ctrl-F pour déclencher l'omnicomplétion
+" L'omnicompletion va à  la fois chercher dans les fonctions du langages utilisé 
+" ET dans les fonction trouvés dans le fichiers de tags
+imap <C-f> <C-x><C-o>
+
+" Mapping de la bascule pour le surlignage des recherches
+"noremap <silent> ,thls :call ToggleHLSearch()<CR>
+
+"------------------------
+" PLUGIN TAGLIST
+"------------------------
+
+" afficher la liste de tags dans le menu de GVIM
+let Tlist_Show_Menu=1
+
+" n'afficher les tags que pour le fichier courant
+let Tlist_Show_One_File=1
+
+" afficher la fenêtre de taglist dans une barre à droite
+let Tlist_Use_Right_Window=1
+
+" n'afficher que les constantes, les classes et les fonctions. 
+" Les variables prennent de la place et ne me servent à rien
+let tlist_php_settings = 'php;d:Constantes;c:Classes;f:Fonctions'

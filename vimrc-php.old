@@ -1,0 +1,151 @@
+"---------------------------------------
+" A CONFIGURER selon environnnement 
+"---------------------------------------
+
+" les réglages suivants concernent ctags et le plugin Taglist
+" qui permettant de naviguer plus facilement dans le code source.
+
+" le plugin taglist doit connaitre l'emplacement du binaire ctaqs pour
+" fonctionner
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+
+"----------------
+" CONFIGURATION
+"----------------
+
+" L'emplacement de notre fichier ctags pour naviguer
+" dans le code source du projet en cours.
+" Création du fichier avec la commande:
+"ctags --tag-relative -f ~/.vim/tags/$project_name.tags --langmap=php:.engine.inc.module.theme.php.install --php-kinds=cdfi --languages=php --recurse --exclude=.svn --exclude=.git --extra=f
+"set tags+=~/.vim/tags/$project_name.tags
+
+"--------------------------------------
+" GENERAL
+"-------------------------------------
+
+" Selection d'un colorscheme
+colorscheme slate
+
+" 256 couleurs...
+set t_Co=256
+
+" Active la souris uniquement en mode visuel et normal
+set mouse=n
+set mouse+=v
+
+" Affiche le status du fichier
+set laststatus=2
+
+" Fini les swap files
+set noswapfile
+
+" Parametrage de l'indentation
+set smartindent
+set autoindent
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+set expandtab
+
+" Affichage des numeros de ligne
+set number
+
+" Parametrage du folding
+set foldmethod=indent
+set foldnestmax=3
+set nofoldenable
+
+" Parametrage de l'affichage des fenetres/split
+set wmh=0
+
+" Parametrage de l'affichage des listes
+set wildmode=list:longest
+set wildmenu
+
+" Color le text au delà de 80 caractères
+"highlight OverLength ctermbg=red ctermfg=white guibg=Red
+"match OverLength /\%81v/
+
+" Affiche les caractères invisibles
+"set listchars=tab:»·,trail:·,extends:#,nbsp:·,eol:¶
+set listchars=tab:»·,trail:·,extends:#,nbsp:·
+set list
+
+syntax on
+filetype on
+
+" Drupal command group, set the correct filetypes for Drupal files.
+" On s'assure que tous les fichiers de drupal soit bien reconnus
+" comment étant du php malgré leurs extensions exotiques
+augroup drupal
+  autocmd BufRead,BufNewFile *.module set filetype=php
+  autocmd BufRead,BufNewFile *.theme set filetype=php
+  autocmd BufRead,BufNewFile *.inc set filetype=php
+  autocmd BufRead,BufNewFile *.install set filetype=php
+  autocmd BufRead,BufNewFile *.engine set filetype=php
+  autocmd BufRead,BufNewFile *.profile set filetype=php
+  autocmd BufRead,BufNewFile *.test set filetype=php
+augroup END
+
+" activer l'omnicompletion pour tous les langages
+set omnifunc=syntaxcomplete#Complete
+
+"---------------------
+" MAPPING
+"---------------------
+
+"F2 pour Switch on/off de la fenêtre TagList
+nnoremap <silent> <C-F3> :TlistToggle<CR>
+
+" Map rapide des commandes SVN simples
+noremap <silent> <F2> :NERDTreeToggle<CR>
+noremap <silent> <C-F2> :NERDTreeFind %<CR>
+
+noremap ,sa :!svn add %<CR>
+noremap ,srm :!svn rm %<CR>
+noremap ,srv :!svn revert %<CR>
+noremap ,su :!svn up<CR>
+" noremap ,bl :execute '!svn blame %|head -n500|tail -n1'<CR>
+
+" F3 pour sauter à la définition de la fonction (grace à ctags)
+map <F3> <C-w>]
+imap <F3> <Esc><C-w>]
+
+" ctrl-F pour déclencher l'omnicomplétion
+" L'omnicompletion va à  la fois chercher dans les fonctions du langages utilisé 
+" ET dans les fonction trouvés dans le fichiers de tags
+imap <C-f> <C-x><C-o>
+
+" Mapping de la bascule pour le surlignage des recherches
+"noremap <silent> ,thls :call ToggleHLSearch()<CR>
+
+"------------------------
+" PLUGIN TAGLIST
+"------------------------
+
+" afficher la liste de tags dans le menu de GVIM
+let Tlist_Show_Menu=1
+
+" n'afficher les tags que pour le fichier courant
+let Tlist_Show_One_File=1
+
+" afficher la fenêtre de taglist dans une barre à droite
+let Tlist_Use_Right_Window=1
+
+" n'afficher que les constantes, les classes et les fonctions. 
+" Les variables prennent de la place et ne me servent à rien
+let tlist_php_settings = 'php;d:Constantes;c:Classes;f:Fonctions'
+
+"-----------------
+" FONCTIONS PERSO
+"-----------------
+
+" Bascule pour activer ou désactiver la surbrillance
+" des résultats de recherche.
+"function ToggleHLSearch()
+"  if &hls
+"    set nohls
+"  else
+"    set hls
+"  endif
+"endfunction 
